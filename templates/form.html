@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cancer Diagnosis Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            width: 400px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        form label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #555;
+        }
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="float"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 6px;
+            border: 1.8px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        form input[type="text"]:focus,
+        form input[type="number"]:focus,
+        form input[type="float"]:focus {
+            border-color: #0078d4;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 12px;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #005ea1;
+        }
+        .result {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .result.cancer {
+            color: #d93025; /* Red */
+        }
+        .result.no-cancer {
+            color: #188038; /* Green */
+        }
+        .votes {
+            margin-top: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cancer Diagnosis Prediction</h2>
+        <form method="post">
+            {% for col in columns %}
+                <label for="{{ col }}">{{ col }}</label>
+                <input type="text" id="{{ col }}" name="{{ col }}" required />
+            {% endfor %}
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction is not none %}
+            <div class="result {% if prediction %}cancer{% else %}no-cancer{% endif %}">
+                {{ '🧬 Cancer Detected' if prediction else '✅ No Cancer Detected' }}
+            </div>
+            <div class="votes">Model Votes: {{ votes }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
