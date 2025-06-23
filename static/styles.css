@@ -167,6 +167,29 @@ main.result-panel.cancer {
     color: #d93025;
 }
 
+.accuracy-box {
+    background-color: #eef1f9;
+    border: 1px solid #c3d2eb;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.accuracy-box h4 {
+    margin-top: 0;
+    color: #005fa3;
+}
+.accuracy-box ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.accuracy-box li {
+    margin-bottom: 6px;
+}
+
 /* Model Votes */
 .votes {
     margin-top: 15px;

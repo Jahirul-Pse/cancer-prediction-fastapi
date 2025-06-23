@@ -5,7 +5,7 @@ import pandas as pd
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from model import predict_majority, train_models
+from model import predict_majority, train_models, get_model_accuracies
 from fastapi.staticfiles import StaticFiles
 
 # Load dataset
@@ -75,13 +75,17 @@ async def post_form(
     }
 
     prediction, raw_votes = predict_majority(user_input)
+    model_accuracies = get_model_accuracies()
+
     votes_list = list(raw_votes.items())
+    accuracies = list(model_accuracies.items())
 
     return templates.TemplateResponse("form.html", {
         "request": request,
         "columns": columns,
         "prediction": prediction,
         "votes": votes_list,
+        "accuracies": accuracies,
         "slider_ranges": slider_ranges
     })
 

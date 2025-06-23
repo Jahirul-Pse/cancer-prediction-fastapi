@@ -87,6 +87,17 @@
         </nav>
 
         <main id="resultPanel" class="result-panel {% if prediction is not none %}visible{% endif %} {% if prediction %}cancer{% else %}no-cancer{% endif %}">
+            {% if accuracies %}
+                <div class="accuracy-box">
+                    <h4>Model Accuracies:</h4>
+                    <ul>
+                        {% for model, acc in accuracies %}
+                            <li><strong>{{ model }}</strong>: {{ (acc * 100) | round(2) }}%</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
             {% if prediction is not none %}
                 <div>
                     {{ '🧬 High chance of Cancer' if prediction else '✅ Low chance of Cancer' }}
