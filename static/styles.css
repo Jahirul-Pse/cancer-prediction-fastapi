@@ -4,7 +4,6 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to bottom right, #f4f6f9, #e6eef6);
     overflow-x: hidden;
 }
 
@@ -58,13 +57,14 @@ h1 {
     height: 100vh;
     padding-top: 60px; /* height of header */
     box-sizing: border-box;
+    background-color: #f4f6f9; /* Optional: subtle background */
 }
 
 /* Sidebar (form navigation) */
 nav {
+    background-color: #ffffff; /* Solid white or custom color */
     width: 450px;
-    background: #ffffff;
-    box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
     padding: 30px 40px;
     overflow-y: auto;
     transition: transform 0.3s ease;
@@ -140,6 +140,7 @@ button[type="submit"]:hover {
 
 /* Result Panel */
 main.result-panel {
+    background-color: #fdfefe; /* Soft light panel */
     flex: 1;
     display: flex;
     justify-content: center;
@@ -154,6 +155,7 @@ main.result-panel {
     visibility: hidden;
     opacity: 0;
     flex-direction: column;
+    border-left: 1px solid #e0e0e0; /* Optional border between nav and main */
 }
 
 main.result-panel.visible {

@@ -90,7 +90,14 @@
             {% if prediction is not none %}
                 <div>
                     {{ '🧬 High chance of Cancer' if prediction else '✅ Low chance of Cancer' }}
-                    <div class="votes">Model Votes: {{ votes }}</div>
+                    <div class="votes">
+                        <h4>Model Predictions:</h4>
+                        <ul>
+                            {% for model, vote in votes %}
+                                <li><strong>{{ model }}</strong>: {{ vote }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             {% else %}
                 <div>Please fill the form and press Predict.</div>

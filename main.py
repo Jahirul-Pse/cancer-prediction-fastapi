@@ -75,13 +75,13 @@ async def post_form(
     }
 
     prediction, raw_votes = predict_majority(user_input)
-    votes = [int(v) for v in raw_votes]
-
+    votes_list = list(raw_votes.items())
 
     return templates.TemplateResponse("form.html", {
         "request": request,
         "columns": columns,
         "prediction": prediction,
-        "votes": votes,
+        "votes": votes_list,
         "slider_ranges": slider_ranges
     })
+
