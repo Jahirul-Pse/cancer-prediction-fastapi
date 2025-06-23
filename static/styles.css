@@ -1,0 +1,174 @@
+/* General Layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom right, #f4f6f9, #e6eef6);
+    overflow-x: hidden;
+}
+
+/* Header */
+h1 {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #0078d4;
+    color: white;
+    margin: 0;
+    padding: 15px 60px 15px 60px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    user-select: none;
+    box-sizing: border-box;
+    z-index: 1100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Toggle Button in Header */
+#navToggleBtn {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0078d4;
+    box-shadow: 0 0 5px rgba(0,0,0,0.15);
+    user-select: none;
+    transition: background-color 0.2s ease;
+    z-index: 1150;
+}
+
+#navToggleBtn:hover {
+    background: #e0f0ff;
+}
+
+/* Wrapper around nav and main */
+.page-wrapper {
+    display: flex;
+    height: 100vh;
+    padding-top: 60px; /* height of header */
+    box-sizing: border-box;
+}
+
+/* Sidebar (form navigation) */
+nav {
+    width: 450px;
+    background: #ffffff;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+    padding: 30px 40px;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    z-index: 900;
+    border-radius: 0 12px 12px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+nav.hidden {
+    transform: translateX(-100%);
+}
+
+/* Form Section Title */
+nav h4 {
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 18px;
+    color: #0078d4;
+    letter-spacing: 0.03em;
+    user-select: none;
+}
+
+/* Form Fields */
+label {
+    display: block;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #555;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin-top: 5px;
+}
+
+input[type="range"] + span {
+    font-size: 14px;
+    color: #333;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+button[type="submit"] {
+    margin-top: 30px;
+    padding: 14px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 700;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,120,212,0.4);
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #005fa3;
+}
+
+/* Result Panel */
+main.result-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #188038;
+    transition: opacity 0.3s ease;
+    visibility: hidden;
+    opacity: 0;
+    flex-direction: column;
+}
+
+main.result-panel.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+main.result-panel.cancer {
+    color: #d93025;
+}
+
+/* Model Votes */
+.votes {
+    margin-top: 15px;
+    font-weight: 500;
+    font-size: 17px;
+    color: #555;
+}

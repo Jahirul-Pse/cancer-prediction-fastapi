@@ -5,26 +5,35 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 
-# Load dataset
-df = pd.read_csv("./dataset/The_Cancer_data_1500_V2.csv")  # Make sure 'Diagnosis' column is present
+# Global variables for trained models and scaler
+logreg = None
+rf = None
+svm = None
+scaler = None
 
-X = df.drop(['Diagnosis'], axis=1)
-y = df['Diagnosis']
+def train_models():
+    global logreg, rf, svm, scaler
 
-# Train/test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    # Load dataset
+    df = pd.read_csv("./dataset/The_Cancer_data_1500_V2.csv")
+    X = df.drop(['Diagnosis'], axis=1)
+    y = df['Diagnosis']
 
-# Scale features
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
+    # Train/test split
+    X_train, _, y_train, _ = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train models
-logreg = LogisticRegression().fit(X_train_scaled, y_train)
-rf = RandomForestClassifier(random_state=42).fit(X_train_scaled, y_train)
-svm = SVC(probability=True).fit(X_train_scaled, y_train)
+    # Scale features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
 
-# Prediction function
+    # Train models
+    logreg = LogisticRegression().fit(X_train_scaled, y_train)
+    rf = RandomForestClassifier(random_state=42).fit(X_train_scaled, y_train)
+    svm = SVC(probability=True).fit(X_train_scaled, y_train)
+
 def predict_majority(input_data: dict):
+    global logreg, rf, svm, scaler
+
     df_input = pd.DataFrame([input_data])
     input_scaled = scaler.transform(df_input)
 
@@ -32,7 +41,7 @@ def predict_majority(input_data: dict):
     pred_rf = rf.predict(input_scaled)[0]
     pred_svm = svm.predict(input_scaled)[0]
 
-    preds = [pred_log, pred_rf, pred_svm]
+    preds = [int(pred_log), int(pred_rf), int(pred_svm)]
     final = max(set(preds), key=preds.count)
 
     return final, preds

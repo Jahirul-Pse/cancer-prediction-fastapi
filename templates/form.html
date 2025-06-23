@@ -3,106 +3,130 @@
 <head>
     <meta charset="UTF-8" />
     <title>Cancer Diagnosis Prediction</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 0;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-            width: 400px;
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
-            text-align: center;
-        }
-        form label {
-            display: block;
-            margin-top: 15px;
-            font-weight: 600;
-            color: #555;
-        }
-        form input[type="text"],
-        form input[type="number"],
-        form input[type="float"] {
-            width: 100%;
-            padding: 10px 12px;
-            margin-top: 6px;
-            border: 1.8px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-        form input[type="text"]:focus,
-        form input[type="number"]:focus,
-        form input[type="float"]:focus {
-            border-color: #0078d4;
-            outline: none;
-        }
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background-color: #0078d4;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #005ea1;
-        }
-        .result {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .result.cancer {
-            color: #d93025; /* Red */
-        }
-        .result.no-cancer {
-            color: #188038; /* Green */
-        }
-        .votes {
-            margin-top: 8px;
-            font-weight: 500;
-            font-size: 14px;
-            color: #555;
-            text-align: center;
-            font-family: monospace;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles.css"/>
 </head>
 <body>
-    <div class="container">
-        <h2>Cancer Diagnosis Prediction</h2>
-        <form method="post">
-            {% for col in columns %}
-                <label for="{{ col }}">{{ col }}</label>
-                <input type="text" id="{{ col }}" name="{{ col }}" required />
-            {% endfor %}
-            <button type="submit">Predict</button>
-        </form>
+    <h1>
+        Cancer Diagnosis Prediction
+        <button id="navToggleBtn" aria-label="Toggle Navigation Panel">☰</button>
+    </h1>
+    <div class="page-wrapper">
+        <nav id="navPanel">
+            <h4>Enter Your Details</h4>
+            <form id="predictionForm" method="post">
+                <!-- Age -->
+                <label for="Age">Age: <span id="ageValue">{{ slider_ranges['Age']['min'] }}</span></label>
+                <input type="range" id="Age" name="Age"
+                       min="{{ slider_ranges['Age']['min'] }}"
+                       max="{{ slider_ranges['Age']['max'] }}"
+                       step="1"
+                       value="{{ slider_ranges['Age']['min'] }}"
+                       oninput="updateSliderValue('Age','ageValue')" required>
 
-        {% if prediction is not none %}
-            <div class="result {% if prediction %}cancer{% else %}no-cancer{% endif %}">
-                {{ '🧬 Cancer Detected' if prediction else '✅ No Cancer Detected' }}
-            </div>
-            <div class="votes">Model Votes: {{ votes }}</div>
-        {% endif %}
+                <!-- Gender -->
+                <label for="Gender">Gender:</label>
+                <select name="Gender" id="Gender" required>
+                    <option value="0">Female</option>
+                    <option value="1">Male</option>
+                </select>
+
+                <!-- BMI -->
+                <label for="BMI">BMI: <span id="bmiValue">{{ '%.1f'|format(slider_ranges['BMI']['min']) }}</span></label>
+                <input type="range" id="BMI" name="BMI"
+                       min="{{ slider_ranges['BMI']['min'] }}"
+                       max="{{ slider_ranges['BMI']['max'] }}"
+                       step="0.1"
+                       value="{{ slider_ranges['BMI']['min'] }}"
+                       oninput="updateSliderValue('BMI','bmiValue')" required>
+
+                <!-- Smoking -->
+                <label for="Smoking">Smoking:</label>
+                <select name="Smoking" id="Smoking" required>
+                    <option value="0">Non-Smoker</option>
+                    <option value="1">Smoker</option>
+                </select>
+
+                <!-- Genetic Risk -->
+                <label for="GeneticRisk">Genetic Risk:</label>
+                <select name="GeneticRisk" id="GeneticRisk" required>
+                    <option value="0">Low</option>
+                    <option value="1">High</option>
+                </select>
+
+                <!-- Physical Activity -->
+                <label for="PhysicalActivity">Physical Activity (hrs/day): 
+                    <span id="activityValue">{{ '%.1f'|format(slider_ranges['PhysicalActivity']['min']) }}</span>
+                </label>
+                <input type="range" id="PhysicalActivity" name="PhysicalActivity"
+                       min="{{ slider_ranges['PhysicalActivity']['min'] }}"
+                       max="{{ slider_ranges['PhysicalActivity']['max'] }}"
+                       step="0.1"
+                       value="{{ slider_ranges['PhysicalActivity']['min'] }}"
+                       oninput="updateSliderValue('PhysicalActivity','activityValue')" required>
+
+                <!-- Alcohol Intake -->
+                <label for="AlcoholIntake">Alcohol Intake (drinks/day): 
+                    <span id="alcoholValue">{{ '%.1f'|format(slider_ranges['AlcoholIntake']['min']) }}</span>
+                </label>
+                <input type="range" id="AlcoholIntake" name="AlcoholIntake"
+                       min="{{ slider_ranges['AlcoholIntake']['min'] }}"
+                       max="{{ slider_ranges['AlcoholIntake']['max'] }}"
+                       step="0.1"
+                       value="{{ slider_ranges['AlcoholIntake']['min'] }}"
+                       oninput="updateSliderValue('AlcoholIntake','alcoholValue')" required>
+
+                <!-- Cancer History -->
+                <label for="CancerHistory">Family Cancer History:</label>
+                <select name="CancerHistory" id="CancerHistory" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+
+                <button type="submit">Predict</button>
+            </form>
+        </nav>
+
+        <main id="resultPanel" class="result-panel {% if prediction is not none %}visible{% endif %} {% if prediction %}cancer{% else %}no-cancer{% endif %}">
+            {% if prediction is not none %}
+                <div>
+                    {{ '🧬 High chance of Cancer' if prediction else '✅ Low chance of Cancer' }}
+                    <div class="votes">Model Votes: {{ votes }}</div>
+                </div>
+            {% else %}
+                <div>Please fill the form and press Predict.</div>
+            {% endif %}
+        </main>
     </div>
+
+<script>
+    function updateSliderValue(id, outputId) {
+        const value = document.getElementById(id).value;
+        if (id === "Age") {
+            document.getElementById(outputId).innerText = parseInt(value);
+        } else {
+            document.getElementById(outputId).innerText = parseFloat(value).toFixed(1);
+        }
+    }
+
+    const nav = document.getElementById("navPanel");
+    const resultPanel = document.getElementById("resultPanel");
+    const navToggleBtn = document.getElementById("navToggleBtn");
+
+    // Hide nav if prediction exists on load
+    window.onload = function() {
+        if (resultPanel.classList.contains("visible")) {
+            nav.classList.add("hidden");
+        }
+    };
+
+    // Toggle nav panel visibility
+    navToggleBtn.addEventListener("click", () => {
+        if (nav.classList.contains("hidden")) {
+            nav.classList.remove("hidden");
+        } else {
+            nav.classList.add("hidden");
+        }
+    });
+</script>
 </body>
 </html>
