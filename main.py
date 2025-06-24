@@ -77,14 +77,11 @@ async def post_form(
     prediction, raw_votes = predict_majority(user_input)
     model_accuracies = get_model_accuracies()
 
-    votes_list = list(raw_votes.items())
     accuracies = list(model_accuracies.items())
 
     return templates.TemplateResponse("form.html", {
         "request": request,
         "columns": columns,
-        "prediction": prediction,
-        "votes": votes_list,
         "accuracies": accuracies,
         "slider_ranges": slider_ranges
     })

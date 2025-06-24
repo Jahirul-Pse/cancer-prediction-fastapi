@@ -17,12 +17,11 @@ logreg = None
 rf = None
 svm = None
 knn = None
-gb = None
 nb = None
 scaler = None
 
 def train_models():
-    global logreg, rf, svm, knn, gb, nb, scaler, accuracies
+    global logreg, rf, svm, knn, nb, scaler, accuracies
 
     df = pd.read_csv("./dataset/The_Cancer_data_1500_V2.csv")
     X = df.drop(['Diagnosis'], axis=1)
@@ -39,7 +38,6 @@ def train_models():
     rf = RandomForestClassifier(random_state=42).fit(X_train_scaled, y_train)
     svm = SVC(probability=True).fit(X_train_scaled, y_train)
     knn = KNeighborsClassifier().fit(X_train_scaled, y_train)
-    gb = GradientBoostingClassifier(random_state=42).fit(X_train_scaled, y_train)
     nb = GaussianNB().fit(X_train_scaled, y_train)
 
     # Compute accuracies
@@ -48,7 +46,6 @@ def train_models():
         "Random Forest": accuracy_score(y_test, rf.predict(X_test_scaled)),
         "SVM": accuracy_score(y_test, svm.predict(X_test_scaled)),
         "KNN": accuracy_score(y_test, knn.predict(X_test_scaled)),
-        "Gradient Boosting": accuracy_score(y_test, gb.predict(X_test_scaled)),
         "Naive Bayes": accuracy_score(y_test, nb.predict(X_test_scaled))
     }
 
@@ -56,7 +53,7 @@ def get_model_accuracies():
     return accuracies
 
 def predict_majority(input_data: dict):
-    global logreg, rf, svm, knn, gb, nb, scaler
+    global logreg, rf, svm, knn, nb, scaler
 
     df_input = pd.DataFrame([input_data])
     input_scaled = scaler.transform(df_input)
@@ -65,7 +62,6 @@ def predict_majority(input_data: dict):
     pred_rf = rf.predict(input_scaled)[0]
     pred_svm = svm.predict(input_scaled)[0]
     pred_knn = knn.predict(input_scaled)[0]
-    pred_gb = gb.predict(input_scaled)[0]
     pred_nb = nb.predict(input_scaled)[0]
 
     votes = {
@@ -73,7 +69,6 @@ def predict_majority(input_data: dict):
         "Random Forest": int(rf.predict(input_scaled)[0]),
         "SVM": int(svm.predict(input_scaled)[0]),
         "KNN": int(knn.predict(input_scaled)[0]),
-        "Gradient Boosting": int(gb.predict(input_scaled)[0]),
         "Naive Bayes": int(nb.predict(input_scaled)[0])
     }
     # Majority vote
